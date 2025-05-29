@@ -14,7 +14,7 @@ char *ft_strchr(char *s, int c)
 void *ft_memcpy(void *dest, const void *src, size_t n)
 {
 	while (--n > 0)
-		((char *)des)[n - 1] = ((char *)src)[n - 1];
+		((char *)dest)[n - 1] = ((char *)src)[n - 1];
 	return dest;
 }
 
@@ -52,7 +52,7 @@ void *ft_memmove(void *dest, const void *src, size_t n)
 {
 	if (dest > src)
 		return ft_memcpy(dest, src, n);
-	else if (des == src)
+	else if (dest == src)
 		return dest;
 	size_t i = ft_strlen((char *)src) - 1;
 	while (i >= 0)
@@ -76,7 +76,7 @@ char *get_next_line(int fd)
 			return NULL;
 		b[read_ret] = 0;
 	}
-	if (!str_appen_mem(&ret, b, tmp - b  + 1))
+	if (!str_append_mem(&ret, b, tmp - b  + 1))
 	{
 		free(ret);
 		return (NULL);
