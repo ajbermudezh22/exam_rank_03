@@ -1,40 +1,21 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   perm.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: dgomez-a <dgomez-a@student.42berlin.d      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/13 21:22:38 by dgomez-a          #+#    #+#             */
-/*   Updated: 2025/03/13 21:39:50 by dgomez-a         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 
-int	ft_strlen(char *str)
+int ft_strlen(char *str)
 {
-	int	len;
-
-	len = 0;
-	while (*str)
-	{
-		len++;
-		str++;
-	}
-	return (len);
+    int len = 0;
+    while (str[len])
+        len++;
+    return (len);
 }
 
-void	ft_swap(char *a, char *b)
+void ft_swap(char *a, char *b)
 {
-	char	temp;
-
-	temp = *a;
-	*a = *b;
-	*b = temp;
+    char tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
 
-void	ft_sort(char *str, int len)
+void ft_sort(char *str, int len)
 {
 	int	i;
 	int	j;
@@ -51,31 +32,38 @@ void	ft_sort(char *str, int len)
 	}
 }
 
-void	find_perm(char *str, int start, int len)
+void ft_reverse(char *str, int len)
 {
-	int	i;
-
-	i = start;
-	if (i == len - 1)
-	{
-		puts(str);
-		return ;
-	}
-	while (i < len)
-	{
-		ft_swap(&str[i], &str[start]);
-		ft_sort(str + start + 1, len - start - 1);
-		find_perm(str, start + 1, len);
-		ft_swap(&str[i], &str[start]);
-		ft_sort(str + start + 1, len - start - 1);
-		i++;
-	}
+    int i = 0, j = len - 1;
+    while (i < j)
+        ft_swap(&str[i++], &str[j--]);
 }
 
-int	main(int argc, char **argv)
+int ft_next_permutation(char *str, int len)
+{
+    int k = len - 2;
+	int l = len - 1;
+    while (k >= 0 && str[k] >= str[k + 1])
+        k--;
+    if (k < 0)
+        return (0);
+    while (str[l] <= str[k])
+        l--;
+    ft_swap(&str[k], &str[l]);
+    ft_reverse(str + k + 1, len - (k + 1));
+    return (1);
+}
+
+int main(int argc, char **argv)
 {
 	if (argc < 2)
-		return (1);
-	find_perm(argv[1], 0, ft_strlen(argv[1]));
-	return (0);
+        return (1);
+    int first = 1;
+    int len = ft_strlen(argv[1]);
+    ft_sort(argv[1], len);
+	puts(argv[1]);
+	while (ft_next_permutation(argv[1], len))
+        puts(argv[1]);
+    return (0);
 }
+
